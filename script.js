@@ -71,9 +71,11 @@ function playSelectedTracks() {
             source.buffer = buf;
             // make it loop?
             //source.loop = true;
+            source.loopStart = 160; // for debug
             // start them all 0.25s after we began, so we're sure they're in sync
             const gainNode = context.createGain();
-            source.start(current_time + 0.25);
+            //source.start(current_time + 0.25);
+            source.start(current_time + 0.25, source.loopStart); // for debug
             source.connect(gainNode);
             gainNode.connect(masterGainNode);
             sourceArray.push(source);
@@ -91,6 +93,7 @@ function playSelectedTracks() {
                     playingArray[i] = false;
                     // only the last track triggers restart
                     if (areAllCheckedTracksDone()) {
+                        console.log("done");
                         if (document.getElementById('repeat').checked) {
                             stopAllTracks();
                             audio_buffers.forEach(startCallback);

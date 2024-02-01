@@ -36,6 +36,14 @@ var endedCallbackArray = [];
 function playSelectedTracks() {
     stopAllTracks();
 
+    if (document.getElementById('realTime').checked &&
+        document.getElementById('repeat').checked &&
+        document.getElementById('repeatShuffle').checked &&
+        tracks.every((trackId) => document.getElementById(trackId).checked === false)
+    ) {
+        shuffleTracks();
+    }
+
     // reuse loaded AudioBuffer in real time mode
     if (document.getElementById('realTime').checked &&
         audio_buffers &&
@@ -114,7 +122,15 @@ function playSelectedTracks() {
                     if (areAllCheckedTracksDone()) {
                         if (document.getElementById('repeat').checked) {
                             stopAllTracks();
+
+                            if (document.getElementById('realTime').checked &&
+                                document.getElementById('repeatShuffle').checked
+                            ) {
+                                shuffleTracks();
+                            }
+
                             audio_buffers.forEach(startCallback);
+                            // playSelectedTracks();
                         }
                     }
                 }
@@ -167,6 +183,8 @@ function toggleRealTime() {
     stopAllTracks();
     audio_buffers = [];
     startCallback = null;
+
+    toggleShuffleDisable();
 }
 
 function toggleTrackRealTime(trackIndex) {
@@ -185,6 +203,18 @@ function toggleTrackRealTime(trackIndex) {
             }
         }
     }
+}
+
+function toggleRepeat() {
+    toggleShuffleDisable();
+}
+
+function toggleShuffleDisable() {
+    const shuffleEnabled = document.getElementById('realTime').checked && document.getElementById('repeat').checked;
+    document.getElementById('repeatShuffle').disabled = !shuffleEnabled;
+    document.getElementById('shuffleRandom').disabled = !shuffleEnabled;
+    document.getElementById('shuffleEarly').disabled = !shuffleEnabled;
+    document.getElementById('shuffleLate').disabled = !shuffleEnabled;
 }
 
 function randomSelectTracks(trackSelector = '') {
@@ -215,6 +245,24 @@ function randomSelectEarlyTracks() {
 
 function randomSelectLateTracks() {
     randomSelectTracks('.late')
+}
+
+function randomSelectTrackGroup() {
+    if (Math.random() < 0.5) {
+        randomSelectEarlyTracks();
+    } else {
+        randomSelectLateTracks();
+    }
+}
+
+function shuffleTracks() {
+    if (document.getElementById('shuffleEarly').checked) {
+        randomSelectEarlyTracks();
+    } else if (document.getElementById('shuffleLate').checked) {
+        randomSelectLateTracks();
+    } else {
+        randomSelectTrackGroup();
+    }
 }
 
 function clearAllSelections() {

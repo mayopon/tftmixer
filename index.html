@@ -30,9 +30,23 @@
         <input type="checkbox" id="realTime" onclick="toggleRealTime()"/>
         <label for="realTime">Real Time Add/Remove Tracks (longer load on play) </label>
     </div>
-    <div class="toggle">
-        <input type="checkbox" id="repeat">
-        <label for="repeat">Repeat</label>
+    <div class="toggle d-flex flex-row gap-3">
+        <div class="align-self-center">
+            <input type="checkbox" id="repeat" onclick="toggleRepeat()">
+            <label for="repeat">Repeat</label>
+        </div>
+        <div class="align-self-center">
+            <input type="checkbox" id="repeatShuffle" disabled="disabled">
+            <label for="repeatShuffle">Shuffle</label>
+        </div>
+        <div class="align-self-center">
+            <input type="radio" id="shuffleRandom" name="shuffleRadio" checked="checked" disabled="disabled">
+            <label for="shuffleRandom">random</label>
+            <input type="radio" id="shuffleEarly" name="shuffleRadio" disabled="disabled">
+            <label for="shuffleEarly">early</label>
+            <input type="radio" id="shuffleLate" name="shuffleRadio" disabled="disabled">
+            <label for="shuffleLate">late</label>
+        </div>
     </div>
     <div id="loadingIndicator" class="text-center" style="display: none;">
         <div class="spinner-border text-primary" role="status">

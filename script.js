@@ -270,20 +270,16 @@ function tweetMix() {
 }
 
 function applyPreset(presetName) {
-    // First, clear all selections
-    const checkboxes = document.querySelectorAll('input[type=checkbox]');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-    });
-
     // Apply the preset selections
     const presetSelections = presets[presetName];
-    presetSelections.forEach(selectionId => {
+    for (let i = 0; i < tracks.length; i++) {
+        const selectionId = tracks[i];
         const checkbox = document.getElementById(selectionId);
         if (checkbox) {
-            checkbox.checked = true;
+            checkbox.checked = presetSelections.includes(selectionId);
+            toggleTrackRealTime(i);
         }
-    });
+    }
 
     // Update any UI elements or states as necessary
 }
